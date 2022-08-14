@@ -1,0 +1,60 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models;
+@using System;
+@model List<Library.Models.Book>;//view has access to the necessary list of Books.
+
+<h1>Books for @User.Identity.Name</h1>
+
+<p>@Html.ActionLink("Add new book", "Create")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
+
+@if (@Model.Any())
+{
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          Task description
+        </th>
+        <th>
+          Complete?
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      @foreach(Book book in Model)
+      {
+        @Html.HiddenFor(modelBook => book.BookId)
+        <tr>
+          <td>
+            @Html.DisplayFor(modelBook => book.Title)
+          </td>
+          <td>
+          @using (Html.BeginForm("Index", "Books", FormMethod.Post, new { @class = "bookCheckbox" }))
+          {
+            @Html.HiddenFor(modelBook => book.BookId)
+            @Html.HiddenFor(modelBook => book.Title)
+
+            @Html.CheckBoxFor(modelBook => book.IsComplete)
+          }
+          
+          </td>
+          <td>
+            @Html.ActionLink("Details", "Details", new { id = book.BookId }) |
+            @Html.ActionLink("Edit", "Edit", new { id = book.BookId }) | 
+            @Html.ActionLink("Delete", "Delete", new { id = book.BookId })
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+else
+{
+  <h3>No books have been added yet!</h3>
+}
