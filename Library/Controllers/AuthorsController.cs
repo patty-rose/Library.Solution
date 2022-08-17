@@ -44,5 +44,25 @@ namespace Library.Controllers
           .FirstOrDefault(author => author.AuthorId == id);
       return View(thisAuthor);
     }
+
+    public ActionResult Edit(int id)
+    {
+      var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
+      ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
+      return View(thisAuthor);
+    }
+
+    [HttpPost]
+    public ActionResult Edit(
+      Author author, int BookId)
+    {
+      if (BookId != 0)
+      {
+        _db.AuthorBook.Add(new AuthorBook() { AuthorId = author.AuthorId, BookId = BookId });
+      }
+      _db.Entry(author).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }

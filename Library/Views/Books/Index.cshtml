@@ -17,10 +17,10 @@
     <thead>
       <tr>
         <th>
-          Task description
+          Book Title
         </th>
         <th>
-          Complete?
+          Author
         </th>
         <th></th>
       </tr>
@@ -35,14 +35,12 @@
             @Html.DisplayFor(modelBook => book.Title)
           </td>
           <td>
-          @using (Html.BeginForm("Index", "Books", FormMethod.Post, new { @class = "bookCheckbox" }))
-          {
-            @Html.HiddenFor(modelBook => book.BookId)
-            @Html.HiddenFor(modelBook => book.Title)
-
-            @Html.CheckBoxFor(modelBook => book.IsComplete)
-          }
-          
+            <ul>
+              @foreach(var join in book.JoinEntities)
+              {
+                <li>@Html.ActionLink($"{@join.Author.Name}", "Details", "Authors", new { id = join.Author.AuthorId })</li>
+              }
+            </ul>
           </td>
           <td>
             @Html.ActionLink("Details", "Details", new { id = book.BookId }) |
