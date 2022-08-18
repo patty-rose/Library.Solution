@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Patty Public Library</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,10 +25,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Authors</a>
                         </li>
                     </ul>
+                    @* @Html.ActionLink("Account", "Index", "Account") *@
                 </div>
                 @* LOGIN in NAVBAR *@
-                @* <div class="login-container">
-                  @if (User.Identity.IsAuthenticated)
+                <div class="login-container">
+
+                  @Html.RenderPartial("~/Views/Shared/_NavLogin.cshtml", ViewBag.LoginViewModel)
+
+                  @* @{Html.RenderPartial("~/Views/Shared/_NavLogin.cshtml", ViewBag.LoginViewModel);} *@
+
+                  @* @await Html.PartialAsync("_NavLogin", ViewBag.LoginViewModel) *@
+                  @* @if (User.Identity.IsAuthenticated)
                   {
                     @using (Html.BeginForm("LogOff", "Account"))
                     {
@@ -50,8 +57,8 @@
                       <input type="submit" value="Log in" class="btn btn-default" />
                       @Html.ActionLink("Account", "Index", "Account")
                     }
-                  }
-                </div> *@
+                  } *@
+                </div>
 
             </div>
         </nav>

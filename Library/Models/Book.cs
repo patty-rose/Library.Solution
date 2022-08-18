@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;//to use [AllowAnonymous] and roles
 using System.Collections.Generic;
 using System;
 
 namespace Library.Models
 {
+  [AllowAnonymous]//anonymous users can access 
   public class Book
   {
 
