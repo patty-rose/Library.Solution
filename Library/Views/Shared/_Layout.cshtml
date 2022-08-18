@@ -30,7 +30,7 @@
                 @* LOGIN in NAVBAR *@
                 <div class="login-container">
 
-                  @Html.RenderPartial("~/Views/Shared/_NavLogin.cshtml", ViewBag.LoginViewModel)
+                  @await Html.PartialAsync("~/Views/Shared/_NavLogin.cshtml", ViewBag.LoginViewModel)
 
                   @* @{Html.RenderPartial("~/Views/Shared/_NavLogin.cshtml", ViewBag.LoginViewModel);} *@
 
