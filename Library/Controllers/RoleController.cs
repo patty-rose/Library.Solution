@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Library.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Controllers
 {
@@ -15,15 +16,20 @@ namespace Library.Controllers
 
     private UserManager<ApplicationUser> userManager;
 
+    private readonly ILogger<RoleController> _logger;
 
-    public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<ApplicationUser> userMgr)
+    public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<ApplicationUser> userMrg, ILogger<RoleController> logger)
     {
       roleManager = roleMgr;
-      userManager = userMgr;
+      userManager = userMrg;
+      _logger = logger;
     }
     //add a dependency of RoleManager class to the Constructor in order to get the roles in a variable called roleManager. also add UserManager dependency
 
-    public ViewResult Index() => View(roleManager.Roles);
+    public ViewResult Index()
+    {
+      return View(roleManager.Roles);
+    } 
 
     private void Errors(IdentityResult result)
     {
@@ -73,10 +79,14 @@ namespace Library.Controllers
     public async Task<IActionResult> Update(string id)//The HTTP GET version of the Update Action method is used to fetch members and non-members of a selected Identity Role.
     {
       IdentityRole role = await roleManager.FindByIdAsync(id);
+
       List<ApplicationUser> members = new List<ApplicationUser>();
+
       List<ApplicationUser> nonMembers = new List<ApplicationUser>();
-      
-      foreach (ApplicationUser user in userManager.Users)
+
+      List<ApplicationUser> users = userManager.Users.ToList();
+
+      foreach (ApplicationUser user in users)
       {
         var list = await userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
         list.Add(user);
@@ -95,8 +105,9 @@ namespace Library.Controllers
       IdentityResult result;
       if (ModelState.IsValid)
       {
-        foreach (string userId in model.AddIds ?? new string[] { })
-        {
+        List<string> userIds = model.AddIds.ToList();
+        foreach (string userId in userIds)
+        {// ?? new string[] { }
           ApplicationUser user = await userManager.FindByIdAsync(userId);
           if (user != null)
           {
@@ -105,8 +116,9 @@ namespace Library.Controllers
             Errors(result);
           }
         }
-        foreach (string userId in model.DeleteIds ?? new string[] { })
-        {
+        List<string> deleteUserIds = model.DeleteIds.ToList();
+        foreach (string userId in deleteUserIds)
+        {// ?? new string[] { }
           ApplicationUser user = await userManager.FindByIdAsync(userId);
           if (user != null)
           {
