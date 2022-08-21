@@ -37,7 +37,7 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> Register (RegisterViewModel model) //async so returns a Task<Ar>. Task class is built-in and represents async actions that haven't been completed yet.
+    public async Task<ActionResult> Register (RegisterViewModel model) //async so returns a Task<AR>. Task class is built-in and represents async actions that haven't been completed yet.
     {
       var user = new ApplicationUser { UserName = model.Email };
 

@@ -3,3 +3,6 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Library.ViewModels
 @* using Library.ViewModels is needed for passign loginViewModel to the NavLogin partial view in the layout *@
+
+@using Microsoft.AspNetCore.Identity
+@addTagHelper Library.TagHelpers.*, Identity
