@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;//allows for async tasks
 using Library.Models;
 using Library.ViewModels;//Different from models or views..
+using Microsoft.AspNetCore.Authorization;//using [AllowAnonymous]
 
 namespace Library.Controllers
 {
+  [AllowAnonymous]
   public class AccountController : Controller
   {
     private readonly LibraryContext _db;
@@ -46,11 +48,12 @@ namespace Library.Controllers
 
       if (result.Succeeded)
       {
-          return RedirectToAction("Index");
+        return RedirectToAction("Index");
       }
       else
       {
-          return View();
+        ViewBag.ErrorMessage = "Registration Failed.";
+        return View();
       }
     }
 
@@ -70,6 +73,7 @@ namespace Library.Controllers
       }
       else//this ensures our program doesn't freeze or break if authentication isn't successful.
       {
+        ViewBag.ErrorMessage = "Unable to Login.";
         return View();
       }
     }
