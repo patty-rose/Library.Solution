@@ -34,10 +34,13 @@ namespace Library
           services.AddDbContext<LibraryContext>(options => options
           .UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
 
-          services.AddIdentity<ApplicationUser, IdentityRole>()//this and chained lines set up ASP.NET core identity as a service and tells Identity we are using ApplicationUser as a model. .AddRoles<> adds role services to Identity. addEntityFrameworkStores method specifies that identity should use EF core adn the LibraryContext class. AddDefaultTokenProviders method adds the default token providers used to generate tokens for reset passwords, change email, etc. and two factor authentication token generation.
+          //below and chained lines set up ASP.NET core identity as a service and tells Identity we are using ApplicationUser as a model. .AddRoles<> adds role services to Identity. addEntityFrameworkStores method specifies that identity should use EF core adn the LibraryContext class. AddDefaultTokenProviders method adds the default token providers used to generate tokens for reset passwords, change email, etc. and two factor authentication token generation.
+          services.AddIdentity<ApplicationUser, IdentityRole>()
           .AddRoles<IdentityRole>()
           .AddEntityFrameworkStores<LibraryContext>()
           .AddDefaultTokenProviders();
+          
+          // services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,ApplicationUserClaimsPrincipalFactory>();
 
           // services.AddAuthorization(options =>
           // {

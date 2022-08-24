@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;//needed for useing Guids
+using Microsoft.AspNetCore.Identity;//needed for using IdentityRole
 
 namespace Library.Models
 {
@@ -7,7 +9,10 @@ namespace Library.Models
   {
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers {get; set;}
+
     public DbSet<AuthorBook> AuthorBook { get; set; }
+    public DbSet<BookUser> BookUser {get; set;}
 
     public LibraryContext(DbContextOptions options) : base(options) { }
 

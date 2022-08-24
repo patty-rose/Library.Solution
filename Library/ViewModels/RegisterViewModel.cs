@@ -13,6 +13,11 @@ namespace Library.ViewModels
     [Display(Name = "Email")]
     public string Email { get; set; }
 
+    // [Required]
+    // [Role]
+    // [Display(Name = "Account Role")]
+    // public string RoleId { get; set; }
+
     [Required]
     [DataType(DataType.Password)]
     [Display(Name = "Password")]
@@ -22,5 +27,7 @@ namespace Library.ViewModels
     [Display(Name = "Confirm password")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; }
+
+
   }
 }

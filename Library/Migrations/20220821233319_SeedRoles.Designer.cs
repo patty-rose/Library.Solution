@@ -3,14 +3,16 @@ using System;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20220821233319_SeedRoles")]
+    partial class SeedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,9 +25,6 @@ namespace Library.Migrations
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BookId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -73,8 +72,6 @@ namespace Library.Migrations
                         .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -127,36 +124,20 @@ namespace Library.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("BookId");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Library.Models.BookUser", b =>
-                {
-                    b.Property<int>("BookUserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CheckoutDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.HasKey("BookUserId");
-
-                    b.HasIndex("BookId");
+                    b.HasKey("BookId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BookUser");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -187,15 +168,15 @@ namespace Library.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6bbb6478-3ebd-43ce-ac57-abaca690357b",
-                            ConcurrencyStamp = "7a936d1b-f43f-4d47-bbed-d6f7b51e49cb",
+                            Id = "9b4a79c4-18ad-42cf-a3a5-2be56051c085",
+                            ConcurrencyStamp = "66a3f850-32e6-465a-be1d-d5b215c4ef3e",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
-                            Id = "eed6d1e5-a10d-4c01-9636-1adaf9f75f03",
-                            ConcurrencyStamp = "2dc140e8-8951-4781-ad18-229e78da572c",
+                            Id = "fb63dde5-7f87-4e23-9468-e3da63a946dc",
+                            ConcurrencyStamp = "a071cee6-8855-4959-ad98-9c0fb146b7d8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -303,15 +284,6 @@ namespace Library.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Library.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Library.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId");
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("Library.Models.AuthorBook", b =>
                 {
                     b.HasOne("Library.Models.Author", "Author")
@@ -331,19 +303,11 @@ namespace Library.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Library.Models.BookUser", b =>
+            modelBuilder.Entity("Library.Models.Book", b =>
                 {
-                    b.HasOne("Library.Models.Book", "Book")
-                        .WithMany("JoinBookUser")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Library.Models.ApplicationUser", "User")
-                        .WithMany("JoinBookUser")
+                        .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Book");
 
                     b.Navigation("User");
                 });
@@ -399,11 +363,6 @@ namespace Library.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Library.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("JoinBookUser");
-                });
-
             modelBuilder.Entity("Library.Models.Author", b =>
                 {
                     b.Navigation("JoinEntities");
@@ -411,8 +370,6 @@ namespace Library.Migrations
 
             modelBuilder.Entity("Library.Models.Book", b =>
                 {
-                    b.Navigation("JoinBookUser");
-
                     b.Navigation("JoinEntities");
                 });
 #pragma warning restore 612, 618
