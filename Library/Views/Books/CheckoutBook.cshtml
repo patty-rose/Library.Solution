@@ -1,0 +1,17 @@
+@{
+  Layout ="_Layout";
+}
+
+@model Library.Models.Book
+
+<h3>Check out @Model.Title</h3>
+<p>Would you like to check out this book?</p>
+
+@using(Html.BeginForm())
+{
+  @Html.HiddenFor(model=>model.BookId)
+
+  <input type= "submit" value= "Checkout this Book"/>
+}
+
+<p>@Html.ActionLink("Return to Book List", "Index")</p>

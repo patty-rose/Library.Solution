@@ -6,10 +6,15 @@
 @using System;
 @model List<Library.Models.Book>;//view has access to the necessary list of Books.
 
-<h1>Books for @User.Identity.Name</h1>
+<h1>Books by title</h1>
 
-<p>@Html.ActionLink("Add new book", "Create")</p>
-<p>@Html.ActionLink("Home", "Index", "Home")</p>
+@if (User.Identity.IsAuthenticated)
+{
+  @if (User.IsInRole("Librarian"))
+  {
+    <p>@Html.ActionLink("Add new book", "Create")</p>
+  }
+}
 
 @if (@Model.Any())
 {
@@ -42,12 +47,22 @@
               }
             </ul>
           </td>
-          <td>
-            @Html.ActionLink("Add author", "AddAuthor", new { id = book.BookId }) |
-            @Html.ActionLink("Details", "Details", new { id = book.BookId }) |
-            @Html.ActionLink("Edit", "Edit", new { id = book.BookId }) | 
-            @Html.ActionLink("Delete", "Delete", new { id = book.BookId })
-          </td>
+            @if (User.Identity.IsAuthenticated)
+            {
+              @if (User.IsInRole("Librarian"))
+              {
+                <td>
+                @Html.ActionLink("Details", "Details", new { id = book.BookId }) |
+                @Html.ActionLink("Add author", "AddAuthor", new { id = book.BookId }) |
+                @Html.ActionLink("Edit", "Edit", new { id = book.BookId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = book.BookId })
+                </td>
+              }
+            }
+            else
+            {
+              @Html.ActionLink("Details", "Details", new { id = book.BookId })
+            }
         </tr>
       }
     </tbody>

@@ -4,10 +4,9 @@
 
 @model Library.Models.Book
 
-<h2>Are you sure you want to delete this?</h2>
+<h2>Are you sure you want to delete @Model.Title?</h2>
 
-@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)
-@using (Html.BeginForm())//BeginForm() auto creates a POST request to an action method whose name matches the .cshtml file it's contained in. This one creates POST request to our Delete action This is why our annotation includes ActionName("Delete").
+@using (Html.BeginForm())
 {
     <input type="submit" value="Delete" />
 }

@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<h4>Edit this task: @Html.DisplayFor(model => model.Title)</h4>
+<h4>Edit this book: @Html.DisplayFor(model => model.Title)</h4>
 
 @using (Html.BeginForm())
 {
@@ -15,9 +15,6 @@
 
     @Html.LabelFor(model => model.Title)
     @Html.EditorFor(model => model.Title)
-
-    @Html.Label("Select author")
-    @Html.DropDownList("AuthorId")
 
     <input type="submit" value="Save" />
 }

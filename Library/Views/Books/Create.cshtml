@@ -2,22 +2,18 @@
   Layout = "_Layout";
 }
 
-@model Library.Models.Book//model directive tells our view what type of data will be passed into the view from the controller route. namespace.Models.class
+@model Library.Models.Book
 
-<h4>Add a new task</h4>
-@using (Html.BeginForm())//What this using statement does is add a closing HTML </form> tag to the form. Alternatively, instead of creating a using block, you can call the Html.EndForm() helper method to close the </form> tag
-//BeginForm() sends an HTTP POST request by default to the current URL. In other words, this form will send a POST request to the Create() route.
+<h4>Add a new book</h4>
+@using (Html.BeginForm())
 {
   @Html.LabelFor(model => model.Title)
   @Html.TextBoxFor(model => model.Title)
-@* We've replaced our HTML LabelFor method with a simple Label method, since Book no longer has an explicitly defined Author property. *@
+
   @Html.Label("Select author")
   @Html.DropDownList("AuthorId")
-  @*give DropDownList() the string name of a ViewBag property of the type SelectList. Since we saved our SelectList as ViewBag.AuthorId, we give DropDownList() the string "AuthorId". This helper method will create an html dropdown select list out of the SelectList object.  *@
 
   <input type="submit" value="Add new book"/>
 }
 
 <p>@Html.ActionLink("Show all books", "Index")</p>
-
-@* Note - AuthorId may seem like a bad name for a SelectList object, but the reason we chose that name is because that will be the name attribute on the <select> tag created. You can check this in your browser DevTools Inspector and see <select id="AuthorId" name="AuthorId">. We could use a different name like ViewBag.AuthorList and you'd get <select id="AuthorList" name="AuthorList">. The problem with that is when we submit our form it will use the name attribute to know what property of the Book object to assign a value, so it will try to create an Book with a AuthorList property, which will not work. *@

@@ -1,0 +1,30 @@
+@{
+  Layout ="_Layout";
+}
+
+@using Library.Models;
+@model Library.Models.ApplicationUser
+
+<h1>@User.Identity.Name's Books</h1>
+@if (Model.JoinBookUser.Count == 0)
+{
+  <p> you have no books</p>
+}
+else
+{
+  <table class="table table-sm table-bordered table-bordered">
+    <tr>
+      <th>Title</th>
+      <th>Checkout Date</th>
+    </tr>
+    @foreach (var join in Model.JoinBookUser)
+    {
+      <tr>
+        <td>@Html.ActionLink($"{join.Book.Title}", "Details", new {id = join.Book.BookId})</td>
+        <td>@join.CheckoutDate</td>
+    </tr>
+    }
+  </table>
+}
+<p>@Html.ActionLink("View All Books", "Index", "Books")</p>
+<p>@Html.ActionLink("Return Home", "Index", "Home")</p>

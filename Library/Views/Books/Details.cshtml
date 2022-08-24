@@ -2,35 +2,57 @@
   Layout = "_Layout";
 }
 
-@model Library.Models.Book//needed so view can reference the model
+@model Library.Models.Book
 
 <h2>Book Details</h2>
 <hr />
 <h3>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)<h3>
 
-@* the model's JoinEntities property now holds the list of associated authors. *@
 @if(@Model.JoinEntities.Count == 0)
 {
-  <p>This book does not belong to any authors</p>
+  <p>This book does not have an authors associated with it.</p>
 }
 else
 {
-  <h4>Authors the book belongs to:</h4>
+  <h4>Author(s):</h4>
   <ul>
-    @* We call the variable join to specify that we are accessing those authors via the join class. *@
+
   @foreach(var join in Model.JoinEntities)
   {
     <li>@join.Author.Name</li>
-    @using (Html.BeginForm("DeleteAuthor", "Books"))
+    @if(User.Identity.IsAuthenticated)
     {
-      @Html.Hidden("joinId", @join.AuthorBookId)
-      <input type="submit" value="Delete"/>
+      @if(User.IsInRole("Librarian"))
+      {
+        @using (Html.BeginForm("DeleteAuthor", "Books"))
+        {
+          @Html.Hidden("joinId", @join.AuthorBookId)
+          <input type="submit" value="Delete"/>
+        }
+      }
     }
   }
   </ul>
 }
 
-<p>@Html.ActionLink("Add a Author", "AddAuthor", new { id = Model.BookId })</p>
-<p>@Html.ActionLink("Back to list", "Index")</p>
-<p>@Html.ActionLink("Edit Book", "Edit", new { id = Model.BookId })</p>
-<p>@Html.ActionLink("Delete Book", "Delete", new { id = Model.BookId })</p>
+@if(User.Identity.IsAuthenticated) 
+{
+  <p>@Html.ActionLink("Checkout Book", "CheckoutBook", new { id = Model.BookId})</p>
+  
+  @if(User.IsInRole("Librarian"))
+  {
+    <p>@Html.ActionLink("Add an Author", "AddAuthor", new { id = Model.BookId })</p>
+    <p>@Html.ActionLink("Edit Book", "Edit", new { id = Model.BookId })</p>
+    <p>@Html.ActionLink("Delete Item", "Delete", new { id = Model.BookId })</p>
+  }
+}
+
+@if(User.Identity.IsAuthenticated)
+    {
+      @if(User.IsInRole("Librarian"))
+      {
+        <p>@Html.ActionLink("Add a Author", "AddAuthor", new { id = Model.BookId })</p>
+        <p>@Html.ActionLink("Edit Book", "Edit", new { id = Model.BookId })</p>
+        <p>@Html.ActionLink("Delete Book", "Delete", new { id = Model.BookId })</p>
+      }
+    }
